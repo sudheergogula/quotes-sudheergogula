@@ -61,7 +61,7 @@ pipeline {
                         sh "kubectl apply -k k8s/overlay/${env.BRANCH_NAME} -n ${k8s_namespace}"
 
                         echo "Verifying deployment ..."
-                        def status = sh(script: "kubectl rollout status deployment/${env.BRANCH_NAME}-quotes-app-deployment -n ${k8s_namespace} --watch --timeout=2m", returnStdout: true)
+                        def status = sh(script: "kubectl rollout status deployment/${env.BRANCH_NAME}-quotes-app-deployment -n ${k8s_namespace} --watch --timeout=3m", returnStdout: true)
                         def exitCode = sh(script: 'echo $?', returnStdout: true)
                         if (exitCode) {
                             echo "Kubernetes deployment is successful with status - ${status}"
