@@ -12,9 +12,4 @@ class QuotesApplicationTests {
 	void contextLoads() {
 	}
 
-	@Test
-	public void main() {
-		QuotesApplication.main(new String[] {});
-	}
-
 }
