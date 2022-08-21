@@ -61,7 +61,7 @@ pipeline {
                         sh "kubectl apply -k k8s/overlay/${env.BRANCH_NAME} -n ${k8s_namespace}"
 
                         echo "Verifying deployment ..."
-                        def status = sh(script: "kubectl rollout status deployment/${env.BRANCH_NAME}-quotes-deployment -n ${k8s_namespace} --watch --timeout=2m", returnStdout: true)
+                        def status = sh(script: "kubectl rollout status deployment/${env.BRANCH_NAME}-quotes-app-deployment -n ${k8s_namespace} --watch --timeout=2m", returnStdout: true)
                         def exitCode = sh(script: 'echo $?', returnStdout: true)
                         if (exitCode) {
                             echo "Kubernetes deployment is successful with status - ${status}"
@@ -84,7 +84,7 @@ pipeline {
                         echo "Application health check ..."
                         timeout(2) {
                             waitUntil {
-                                def ip = sh(script: "kubectl get service/${env.BRANCH_NAME}-quotes-lb-service -n ${k8s_namespace} --output jsonpath='{.status.loadBalancer.ingress[0].ip}'", returnStdout: true)
+                                def ip = sh(script: "kubectl get service/${env.BRANCH_NAME}-quotes-app-lb-service -n ${k8s_namespace} --output jsonpath='{.status.loadBalancer.ingress[0].ip}'", returnStdout: true)
                                 if (ip != null && ip?.trim()) {
                                     echo "The load balancer IP is '${ip}'"
                                     def httpResponseCode = sh(script: "curl -s -o /dev/null -w '%{http_code}' ${ip} --connect-timeout 60", returnStdout: true)
