@@ -4,8 +4,8 @@ pipeline {
     agent any
 
     environment {
+        sonarInstallationName = "SonarQubeScanner"
         userName = "sudheergogula"
-        imageName = "gogulasudheer/i-${userName}-${env.BRANCH_NAME}"
         k8s_namespace = "kubernetes-cluster-${userName}"
     }
 
@@ -40,16 +40,9 @@ pipeline {
                 branch 'develop'
             }
             steps {
-                withSonarQubeEnv(installationName: 'SonarQubeScanner') {
+                withSonarQubeEnv(installationName: ${sonarInstallationName}) {
                     sh 'mvn test sonar:sonar'
                 }
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                echo "Building Docker image ..."
-                sh "docker build -t ${imageName}:latest -t ${imageName}:${BUILD_NUMBER} ."
             }
         }
 
@@ -117,7 +110,6 @@ pipeline {
             // attachLog: true
         }
         cleanup {
-            sh "docker image rm ${imageName}:latest ${imageName}:${BUILD_NUMBER}"
             cleanWs()
         }
     }
