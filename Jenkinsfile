@@ -102,7 +102,7 @@ pipeline {
     }
     post {
         failure {
-            echo "Pipeline failed"
+            echo "Pipeline failed!"
             // Uncomment the following lines to send a mail using emailext plugin
             // emailext to: 'sudheer.gogula@nagarro.com',
             // subject: "Jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}",
