@@ -40,7 +40,7 @@ pipeline {
                 branch 'develop'
             }
             steps {
-                withSonarQubeEnv(installationName: ${sonarInstallationName}) {
+                withSonarQubeEnv(installationName: "${sonarInstallationName}") {
                     sh 'mvn test sonar:sonar'
                 }
             }
