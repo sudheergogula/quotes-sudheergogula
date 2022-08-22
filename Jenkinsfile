@@ -46,13 +46,6 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                echo "Building Docker image ..."
-                sh "docker build -t ${imageName}:latest -t ${imageName}:${BUILD_NUMBER} ."
-            }
-        }
-
         stage('Kubernetes Deployment') {
             steps {
                 script {
